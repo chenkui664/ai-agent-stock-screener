@@ -1,0 +1,57 @@
+name: AI 智能体 Top 10 股票热力榜
+
+on:
+  schedule:
+    # 每天 11:00 北京时间 (UTC+8) = 03:00 UTC
+    - cron: '0 3 * * *'
+  
+  # 允许手动触发
+  workflow_dispatch:
+
+env:
+  PYTHON_VERSION: '3.12'
+  
+jobs:
+  run-stock-screener:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+      
+      - name: 设置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: 安装依赖
+        run: |
+          python -m pip install --upgrade pip
+          pip install adata akshare pandas requests
+        shell: bash
+      
+      - name: 运行主程序
+        env:
+          # 概念配置
+          CONCEPT_KEY: ${{ vars.CONCEPT_KEY }}
+          TOP_N: ${{ vars.TOP_N }}
+          CANDIDATE_N: ${{ vars.CANDIDATE_N }}
+          
+          # 推送平台 Webhook
+          WECHAT_WEBHOOK_URL: ${{ secrets.WECHAT_WEBHOOK_URL }}
+          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          DINGTALK_WEBHOOK_URL: ${{ secrets.DINGTALK_WEBHOOK_URL }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          
+          # 邮件配置
+          EMAIL_ENABLED: ${{ vars.EMAIL_ENABLED }}
+          EMAIL_SMTP_SERVER: ${{ secrets.EMAIL_SMTP_SERVER }}
+          EMAIL_SMTP_PORT: ${{ secrets.EMAIL_SMTP_PORT }}
+          EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        run: |
+          python main.py
+        shell: bash
