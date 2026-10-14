@@ -36,7 +36,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.fetcher import get_trade_date
 from src.scorer import get_top_stocks
 from src.summarizer import generate_top_stocks_report, generate_news_link
-from src.pusher import format_message, push_to_all_platforms
+from src.pusher import format_message, push_feishu
 
 # 配置日志
 logging.basicConfig(
@@ -132,23 +132,15 @@ def main():
         logger.info("...")
         logger.info("-" * 60)
         
-        # 步骤 6：推送到 IM 平台
-        logger.info(f"\n[步骤 6] 推送到 IM 平台...")
-        push_results = push_to_all_platforms(message, trade_date)
+        # 步骤 6：推送到飞书
+        logger.info(f"\n[步骤 6] 推送到飞书...")
+        success = push_feishu(message)
         
         # 输出推送结果
-        logger.info("\n推送结果：")
-        success_count = 0
-        for platform, success in push_results.items():
-            status = "✓ 成功" if success else "✗ 失败/未配置"
-            logger.info(f"  {platform}: {status}")
-            if success:
-                success_count += 1
-        
-        if success_count > 0:
-            logger.info(f"\n✓ 推送完成：{success_count} 个平台成功")
+        if success:
+            logger.info("\n✓ 飞书推送成功")
         else:
-            logger.warning("\n⚠️ 没有平台推送成功（可能都未配置）")
+            logger.warning("\n⚠️ 飞书推送失败")
         
         # 完成
         logger.info("\n" + "=" * 80)

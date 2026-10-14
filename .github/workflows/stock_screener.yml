@@ -38,21 +38,8 @@ jobs:
           TOP_N: ${{ vars.TOP_N }}
           CANDIDATE_N: ${{ vars.CANDIDATE_N }}
           
-          # 推送平台 Webhook（从 Secrets 读取）
-          WECHAT_WEBHOOK_URL: ${{ secrets.WECHAT_WEBHOOK_URL }}
+          # 飞书 Webhook（从 Secrets 读取）
           FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
-          DINGTALK_WEBHOOK_URL: ${{ secrets.DINGTALK_WEBHOOK_URL }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          
-          # 邮件配置
-          EMAIL_ENABLED: ${{ vars.EMAIL_ENABLED }}
-          EMAIL_SMTP_SERVER: ${{ secrets.EMAIL_SMTP_SERVER }}
-          EMAIL_SMTP_PORT: ${{ secrets.EMAIL_SMTP_PORT }}
-          EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
-          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
-          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
-          EMAIL_TO: ${{ secrets.EMAIL_TO }}
           
           # 大模型 API Key
           DASHSCOPE_API_KEY: ${{ secrets.DASHSCOPE_API_KEY }}
