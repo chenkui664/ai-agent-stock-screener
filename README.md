@@ -87,7 +87,7 @@ conda activate stock
 #### 3. 安装依赖
 
 ```bash
-pip install adata akshare pandas requests
+pip install adata akshare pandas requests dashscope python-dotenv
 ```
 
 #### 4. 配置环境变量
