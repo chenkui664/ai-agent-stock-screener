@@ -27,17 +27,17 @@ jobs:
       - name: 安装依赖
         run: |
           python -m pip install --upgrade pip
-          pip install adata akshare pandas requests
+          pip install -r requirements.txt
         shell: bash
       
       - name: 运行主程序
         env:
-          # 概念配置
+          # 概念配置（从 Variables 读取）
           CONCEPT_KEY: ${{ vars.CONCEPT_KEY }}
           TOP_N: ${{ vars.TOP_N }}
           CANDIDATE_N: ${{ vars.CANDIDATE_N }}
           
-          # 推送平台 Webhook
+          # 推送平台 Webhook（从 Secrets 读取）
           WECHAT_WEBHOOK_URL: ${{ secrets.WECHAT_WEBHOOK_URL }}
           FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
           DINGTALK_WEBHOOK_URL: ${{ secrets.DINGTALK_WEBHOOK_URL }}
@@ -52,6 +52,8 @@ jobs:
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
           EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
           EMAIL_TO: ${{ secrets.EMAIL_TO }}
-        run: |
-          python main.py
+          
+          # 大模型 API Key
+          DASHSCOPE_API_KEY: ${{ secrets.DASHSCOPE_API_KEY }}
+        run: python main.py
         shell: bash
